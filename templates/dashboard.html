@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Welcome {{ user }}</h2>
+        <h3>Current Balance: ₹{{ balance }}</h3>
+    
+        <form method="POST" action="/add">
+            <select name="action" required>
+                <option value="deposit">Deposit</option>
+                <option value="withdraw">Withdraw</option>
+            </select>
+            <input name="amount" type="number" step="0.01" min="0" placeholder="Amount" required>
+            <input name="description" type="text" placeholder="Description" required>
+            <input name="date" type="date" required>
+            <button type="submit">Submit</button>
+        </form>
+    <h1>Transaction History</h1>
+        <!-- Balance List -->
+        <ul class="balance-list">
+            {% for t in transactions %}
+            <li>
+                {{ t[3] }} | ₹{{ t[2] }} on {{ t[4] }}
+                <a href="/delete/{{ t[0] }}" onclick="return confirmBalanceDelete()" class="delete-link">[Delete]</a>
+            </li>
+            {% endfor %}
+        </ul>
+
+
+    
+        <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+
+    <script>
+        function confirmBalanceDelete() {
+            return confirm("Are you sure you want to delete this balance entry? This will affect your total balance calculation.");
+        }
+
+
+    </script>
+</body>
+</html>
